@@ -1,4 +1,4 @@
-# Gen_Evl_Yosi
+# Genómica Evolutiva - Bioinformática y Ciencias Ómicas
 una colección de códigos para la clase de genómica evolutiva
 
 # codigo 1:
