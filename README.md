@@ -1,4 +1,4 @@
-# Gen_Evl_Vic
+# Gen_Evl_Yosi
 una colección de códigos para la clase de genómica evolutiva
 
 # codigo 1:
