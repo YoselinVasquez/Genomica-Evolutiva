@@ -1,5 +1,5 @@
 # Genómica Evolutiva - Bioinformática y Ciencias Ómicas
-una colección de códigos para la clase de genómica evolutiva
+Una colección de códigos para la clase de genómica evolutiva
 
 # codigo 1: Descargar sratoolkit.
 ```r
