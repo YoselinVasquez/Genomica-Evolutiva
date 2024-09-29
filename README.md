@@ -24,7 +24,7 @@ export PATH=$PATH:$PWD/sratoolkit.3.0.10-ubuntu64/bin
 prefetch -h 
 prefetch --max-size 50G --option-file denv.txt
 
-# Saca los archivos sra al directorio de trabajo
+# Saca los archivos sra. al directorio de trabajo
 mv */*.sra .
 
 # Eliminar directorios
