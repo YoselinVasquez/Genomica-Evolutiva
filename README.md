@@ -85,4 +85,6 @@ do
 prefix=$(basename $r1 .fa)
 prokka --cpus 4 $r1 -o ${prefix} --prefix ${prefix} --kingdom Viruses ; 
 done ;
+conda deactivate ;
+
 ```
