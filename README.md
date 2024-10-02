@@ -30,7 +30,7 @@ mv */*.sra .
 # Eliminar directorios
 rm -r ERR12389866/ ERR12543675/
 
-# Generar archivos de salida en formato fastq
+# Generar archivos de salida en formato fastq (1 forward y 1 reverse).
 fasterq-dump --split-files *.sra 
 
 # Comprimir archivos fastq
@@ -48,10 +48,11 @@ fasterq-dump --split-files *.sra
 gzip *fastq
 fastqc *
 
-#1 indexar el genoma de referencia#
+#1 Indexar el genoma de referencia#
 bwa index reference.fasta ;
 
-#2# preparar las instrucciones generales#
+# Ejecutar #2# y #3# juntos.
+#2# Preparar las instrucciones generales#
 for r1 in *fastq.gz
 do
 prefix=$(basename $r1 _1.fastq.gz)
@@ -69,7 +70,7 @@ rm ${prefix}_uno.sam ${prefix}_unoa.bam ${prefix}_dosa.bam ${prefix}_tresa.bam $
 done ;
 ls ;
 
-#4# extraer genoams consenso #
+#4# extraer genoma consenso. Generaremos archivos archivos "fa." y "qual.txt"
 for r1 in *bam
 do
 prefix=$(basename $r1 .bam)
@@ -77,4 +78,11 @@ prefix=$(basename $r1 .bam)
 samtools mpileup -aa -A -d 0 -Q 0 $r1 | ivar consensus -p ${prefix}.fasta -q 25 -t 0.6 -m 10 ;
 done ; 
 ls ;
+
+#5# annotation #
+for r1 in *fa
+do
+prefix=$(basename $r1 .fa)
+prokka --cpus 4 $r1 -o ${prefix} --prefix ${prefix} --kingdom Viruses ; 
+done ;
 ```
