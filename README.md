@@ -70,7 +70,7 @@ rm ${prefix}_uno.sam ${prefix}_unoa.bam ${prefix}_dosa.bam ${prefix}_tresa.bam $
 done ;
 ls ;
 
-#4# extraer genoma consenso. Generaremos archivos "fa." y "qual.txt"
+#4# Extraer genoma consenso. Se generan archivos "fa." y "qual.txt"
 for r1 in *bam
 do
 prefix=$(basename $r1 .bam)
@@ -78,13 +78,29 @@ prefix=$(basename $r1 .bam)
 samtools mpileup -aa -A -d 0 -Q 0 $r1 | ivar consensus -p ${prefix}.fasta -q 25 -t 0.6 -m 10 ;
 done ; 
 ls ;
+```
+# Código 4: Instalación y análisis Prokka e intalación de Artemis
+```r
+# Instalar prokka
+conda create -n prokka ;
+conda activate prokka ;
+conda install bioconda/label/cf201901::prokka
 
-#5# annotation #
+# Analisis con prokka
+mkdir annotation/ ;
 for r1 in *fa
 do
 prefix=$(basename $r1 .fa)
 prokka --cpus 4 $r1 -o ${prefix} --prefix ${prefix} --kingdom Viruses ; 
+mv ${prefix}/*.gff annotation/${prefix}.gff
 done ;
+
+#Para salir del environment 
 conda deactivate ;
 
+# Instalar artemis
+conda create -n art
+conda activate art
+conda install bioconda::artemis
 ```
+
