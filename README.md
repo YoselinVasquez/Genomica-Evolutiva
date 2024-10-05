@@ -1,10 +1,15 @@
 # Genómica Evolutiva - Bioinformática y Ciencias Ómicas
-Una colección de códigos para la clase de genómica evolutiva
+Una colección de códigos para la clase de genómica evolutiva.
 
 # codigo 1: Descargar sratoolkit.
 ```r
+# Para crear un directorio, usar el comado mkdir seguido del nombre del directorio
 mkdir genomas;
-grep ">" genomas.fasta ;
+
+# para ver los encabezados de los archivos .fa
+grep ">" *.fa ;
+
+#Para ver todos los directorios y archivos que se encuentran en una ambiente de trabajo
 ls ;
 
 # Para descargar sratoolkit
@@ -22,6 +27,7 @@ export PATH=$PATH:$PWD/sratoolkit.3.0.10-ubuntu64/bin
 # Código 2: Descargar archivos sra., generar archivos de salida en formato fastq. y obtención de archivos en formato fastqc.
 ```r
 prefetch -h 
+# Crear directorios con archivos ".sra"
 prefetch --max-size 50G --option-file denv.txt
 
 # Saca los archivos sra. al directorio de trabajo
@@ -88,7 +94,7 @@ conda install bioconda/label/cf201901::prokka
 
 # Otorgar permisos al directorio de trabajo
 chmod 777 (nombre del directorio)
-
+```
 # Analisis con prokka
 mkdir annotation/ ;
 for r1 in *fa
