@@ -86,6 +86,9 @@ conda create -n prokka ;
 conda activate prokka ;
 conda install bioconda/label/cf201901::prokka
 
+# Otorgar permisos al directorio de trabajo
+chmod 777 (nombre del directorio)
+
 # Analisis con prokka
 mkdir annotation/ ;
 for r1 in *fa
@@ -103,4 +106,13 @@ conda create -n art
 conda activate art
 conda install bioconda::artemis
 ```
+# Código 5: Observación de los resultados en Artemis 
+```r
+# Es necesario contar con archivos ".fa" y ".gff"
+# Primero: crear un ambiente para artemis
+conda activate art
 
+# Segundo: entrar a la interfaz colocando "art" en la terminal.
+
+# Tercero: seleccionar el archivo ".gff"
+File --> open file manager --> cargar achivo con extensión ".gff".
