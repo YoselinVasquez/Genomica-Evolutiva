@@ -113,7 +113,7 @@ conda create -n art
 conda activate art
 conda install bioconda::artemis
 ```
-# Código 5: Observación de los resultados en Artemis 
+# Código 5: Observar los resultados en Artemis 
 ```r
 # Es necesario contar con archivos ".fa" y ".gff"
 # Primero: crear un ambiente para artemis
