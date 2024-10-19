@@ -57,7 +57,7 @@ fastqc *
 #1 Indexar el genoma de referencia#
 bwa index reference.fasta ;
 
-# Ejecutar #2# y #3# juntos.
+# Ejecutar #2# y #3# juntos. Generar 1 archivo "bam.bai" y 1 archivo "bam".
 #2# Preparar las instrucciones generales#
 for r1 in *fastq.gz
 do
