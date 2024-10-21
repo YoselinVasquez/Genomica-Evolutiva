@@ -76,7 +76,7 @@ rm ${prefix}_uno.sam ${prefix}_unoa.bam ${prefix}_dosa.bam ${prefix}_tresa.bam $
 done ;
 ls ;
 
-#4# Extraer genoma consenso. Se generan archivos "fa." y "qual.txt"
+#4# Extraer genoma consenso. Se generan archivos ".fa" y "qual.txt"
 for r1 in *bam
 do
 prefix=$(basename $r1 .bam)
