@@ -123,3 +123,86 @@ conda activate art
 
 # Tercero: seleccionar el archivo ".gff"
 File --> open file manager --> cargar achivo con extensión ".gff".
+```
+# Código 6: Programas para ensamblaje (Nanopore)
+```r
+# Se recomienda crear un ambiente nuevo dentro de conda, para cada programa instalado.
+
+# Ver calidad de datos con nanoplot
+## Instalar Nanoplot
+conda install -c conda-forge -c bioconda nanoplot
+
+# Filtrado de datos con nanofilt
+## Insatalar Nanofilt
+conda install -c bioconda nanofilt
+
+# Ensamblaje de novo con flye
+## Insatalar Flye
+conda install -c bioconda flye
+
+# Polishing de datos con minimap2 y racon.
+## Instalar Minimap2
+conda install -c bioconda minimap2
+
+## Instalar Racon
+conda install -c bioconda racon
+
+# Requerimientos de MEDAKA (Pyabpoa, bcftools, samtools (v1.11), minimap2)
+## Instalación
+pip install pyabpoa
+sudo apt install bcftools
+conda install -c bioconda samtools==1.11
+
+# Anotación de secuencias consenso con medaka
+## Instalar medaka
+conda install -c conda-forge –c bioconda medaka
+```
+# Código 6: Ensamblaje Nanopore (pipeline)
+```r
+# Descargar los códigos de acceso (códigos: SRR17110067 y SRR17110070)
+mkdir sra_files ;
+prefetch --max-size 50G --option-file accessions.txt ;
+mv */*.sra . ;
+fasterq-dump --split-files *.sra 
+gzip *.fastq ;
+mkdir sra_files ;
+mv *.sra sra_files/ ;
+
+# Inspeccionar las longitudes de los reads
+zcat SRR17110067.fastq.gz | grep -n "length" | cut -f2 -d'=' | sort -r -n | uniq | head -n 20
+zcat SRR17110070.fastq.gz | grep -n "length" | cut -f2 -d'=' | sort -r -n | uniq | head -n 20
+
+# Ver calidad de datos: nanoplot
+NanoPlot -t 2 -o SRR17110067_QC --fastq SRR17110067.fastq.gz
+NanoPlot -t 2 -o SRR17110070_QC --fastq SRR17110070.fastq.gz
+
+# Filtrar datos: nanofilt
+gunzip -c SRR17110067.fastq.gz | NanoFilt --logfile nanofilt.log -l 500 -q 10 | gzip > SRR17110067.trim.fastq.gz ;
+gunzip -c SRR17110070.fastq.gz | NanoFilt --logfile nanofilt.log -l 500 -q 10 | gzip > SRR17110070.trim.fastq.gz ;
+ls -lh ;
+
+# Ensamblado de lecturas: flye
+flye -o SRR17110067.genoma --nano-raw SRR17110067.trim.fastq.gz --threads 4 ;
+flye -o SRR17110070.genoma --nano-raw SRR17110070.trim.fastq.gz --threads 4 ;
+ls -lh ;
+
+# Polishing: minimap2 + racon
+minimap2 -x ava-ont -t 4 SRR17110067.genoma/assembly.fasta SRR17110067.trim.fastq.gz > overlaps1.paf ;
+racon -t 4 SRR17110067.trim.fastq.gz overlaps1.paf SRR17110067.genoma/assembly.fasta > SRR17110067.racon1.fasta ;
+
+minimap2 -x ava-ont -t 4 SRR17110070.genoma/assembly.fasta SRR17110070.trim.fastq.gz > overlaps2.paf ;
+racon -t 4 SRR17110070.trim.fastq.gz overlaps2.paf SRR17110070.genoma/assembly.fasta > SRR17110070.racon1.fasta ;
+
+minimap2 -x ava-ont -t 4 SRR17110067.racon1.fasta SRR17110067.trim.fastq.gz > overlaps3.paf ;
+racon -t 4 SRR17110067.trim.fastq.gz overlaps3.paf SRR17110067.racon1.fasta > SRR17110067.racon2.fasta ;
+
+minimap2 -x ava-ont -t 4 SRR17110070.racon1.fasta SRR17110070.trim.fastq.gz > overlaps4.paf ;
+racon -t 4 SRR17110070.trim.fastq.gz overlaps4.paf SRR17110070.racon1.fasta > SRR17110070.racon2.fasta ;
+
+# Anotación de seciencias consenso: medaka
+medaka_consensus -i SRR17110070.trim.fastq.gz -d SRR17110070.racon2.fasta -o medaka_SRR17110070 -t 4 ;
+medaka_consensus -i SRR17110067.trim.fastq.gz -d SRR17110067.racon2.fasta -o medaka_SRR17110067 -t 4 ;
+
+# Evaluar calidad del emsamblado: QUAST
+quast.py -o quast_results -m 0 consensus.fasta
+```
