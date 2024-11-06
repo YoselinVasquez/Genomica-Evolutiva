@@ -157,9 +157,10 @@ conda install -c bioconda samtools==1.11
 ## Instalar medaka
 conda install -c conda-forge –c bioconda medaka
 ```
-# Código 6: Ensamblaje Nanopore (pipeline)
+# Código 7: Ensamblaje Nanopore (pipeline)
 ```r
 # Descargar los códigos de acceso (códigos: SRR17110067 y SRR17110070)
+# Crear directorio "sra_files", generar archivos SRA, mover archivos SRA al ambiente de trabajo, generar archivos fastq, comprimir archivos fastqc y mover los archivos SRA al directorio sra_files.
 mkdir sra_files ;
 prefetch --max-size 50G --option-file accessions.txt ;
 mv */*.sra . ;
@@ -205,4 +206,20 @@ medaka_consensus -i SRR17110067.trim.fastq.gz -d SRR17110067.racon2.fasta -o med
 
 # Evaluar calidad del emsamblado: QUAST
 quast.py -o quast_results -m 0 consensus.fasta
+```
+
+# Código 8: BLAST
+```r
+# Instalacion a traves de CONDA
+conda install bioconda::blast
+or
+conda install -c conda-forge -c bioconda -c defaults blast
+
+# Pasos para descargar Datasets de secuecnias de ADN y proteinas.
+## http://www.mgc.ac.cn/VFs/
+## Default webpage accessible to all users worldwide
+## Download
+## DNA sequences of full dataset
+## Protein sequences of full dataset
+
 ```
