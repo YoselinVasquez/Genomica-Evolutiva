@@ -92,8 +92,8 @@ conda create -n prokka ;
 conda activate prokka ;
 conda install bioconda/label/cf201901::prokka
 
-# Otorgar permisos al directorio de trabajo
-chmod 777 (nombre del directorio)
+# Otorgar permisos a los archivo de trabajo
+chmod 777 (nombre de archivo)
 
 # Analisis con prokka
 
