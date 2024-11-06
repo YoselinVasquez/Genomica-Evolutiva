@@ -215,7 +215,7 @@ conda install bioconda::blast
 or
 conda install -c conda-forge -c bioconda -c defaults blast
 
-# Pasos para descargar Datasets de secuecnias de ADN y proteinas.
+# Pasos para descargar Datasets de secuecnias de ADN y proteinas, vinculados a Factores de virulencia.
 ## http://www.mgc.ac.cn/VFs/
 ## Default webpage accessible to all users worldwide
 ## Download
