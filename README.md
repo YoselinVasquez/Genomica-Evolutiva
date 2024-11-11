@@ -222,4 +222,10 @@ conda install -c conda-forge -c bioconda -c defaults blast
 ## DNA sequences of full dataset
 ## Protein sequences of full dataset
 
+# Crearemos formatos FASTA de los archivos descargados
+gzip -d VFDB_setB_nt.fas.gz 
+gzip -d VFDB_setB_pro.fas.gz
+
+# Corrida en BLAST
+
 ```
