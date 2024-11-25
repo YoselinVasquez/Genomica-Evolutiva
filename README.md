@@ -227,5 +227,19 @@ gzip -d VFDB_setB_nt.fas.gz
 gzip -d VFDB_setB_pro.fas.gz
 
 # Corrida en BLAST
+makeblastdb -in VFDB_setB_nt.fas -dbtype nucl ;
+blastn -db VFDB_setB_nt.fas -query GCA_001183825.1.fasta -perc_identity 90 -outfmt 6 -num_threads 4 > blast.csv ;
+head blast.csv ;
+cat blast.csv ;
+
+# Headers
+sed '1i query.acc.ver subject.acc.ver perc.identity alignment.length mismatches gap.opens q.start q.end s.start s.end evalue bit.score' blast.csv | tr " " "\t" > blast.2.csv
+
+# Instalar R
+conda install -c conda-forge -c bioconda -c defaults r-base
+
+# Analizar los datos en R
+## Leer la data resultante de blast
+data <- read.csv("blast.2.csv", sep="\t", header=TRUE)
 
 ```
