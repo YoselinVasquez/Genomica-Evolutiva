@@ -267,8 +267,13 @@ data.frame(names(data))
 ## Obtenet un plot de longitud de alineamiento vs %identidad
 plot(data$alignment.length, data$perc.identity, xlab="length", ylab="% identity", main="BLASTn VFDB vs Chlamydia", pch=16, col="blue", cex=2)
 
-# Instalar bedtools desde conda para extraer las regiones "blasteadas"
+## Generar un archivo ".bed" en Rstudio
+write.table(seq, "extract.txt", sep="\t", row.names = F, col.names =F, quot=F)
+
+# Instalar bedtools desde bioconda para extraer las regiones "blasteadas"
  conda install bioconda::bedtools
 
 bedtools getfasta -fi  GCA_001183825.1.fasta -bed extract.txt -fo virulence.fasta
+
+
 ```
