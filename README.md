@@ -232,14 +232,43 @@ blastn -db VFDB_setB_nt.fas -query GCA_001183825.1.fasta -perc_identity 90 -outf
 head blast.csv ;
 cat blast.csv ;
 
-# Headers
+# Colocar los Headers en el archivo ".csv" generado
 sed '1i query.acc.ver subject.acc.ver perc.identity alignment.length mismatches gap.opens q.start q.end s.start s.end evalue bit.score' blast.csv | tr " " "\t" > blast.2.csv
 
 # Instalar R
 conda install -c conda-forge -c bioconda -c defaults r-base
 
 # Analizar los datos en R
-## Leer la data resultante de blast
+## Leer la data obtedida de blast
 data <- read.csv("blast.2.csv", sep="\t", header=TRUE)
 
+## Para conocer el número de filas y columnas de la tabla resultante
+dim(data)
+
+## Conocer las filas asignadas a una columna determinada
+length(data$subject.acc.ver)
+
+# Conocer el número de elementos únicos de esa columna
+length(unique(data$subject.acc.ver))
+length(unique(data$query.acc.ver))
+
+## Conocer estadísticos básicos en un solo paso
+summary(data$query.acc.ver)
+summary(data$alignment.length)
+summary(data$perc.identity)
+
+## Obtener un boxplot de los porcentajes de identidad
+boxplot(data$perc.identity)
+boxplot(data$perc.identity, xlab="genoma", ylab="% identidad")
+
+## Obtener solo los encabezados de cada columna
+data.frame(names(data))
+
+## Obtenet un plot de longitud de alineamiento vs %identidad
+plot(data$alignment.length, data$perc.identity, xlab="length", ylab="% identity", main="BLASTn VFDB vs Chlamydia", pch=16, col="blue", cex=2)
+
+# Instalar bedtools desde conda para extraer las regiones "blasteadas"
+ conda install bioconda::bedtools
+
+bedtools getfasta -fi  GCA_001183825.1.fasta -bed extract.txt -fo virulence.fasta
 ```
