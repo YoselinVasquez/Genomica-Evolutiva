@@ -275,5 +275,18 @@ write.table(seq, "extract.txt", sep="\t", row.names = F, col.names =F, quot=F)
 
 bedtools getfasta -fi  GCA_001183825.1.fasta -bed extract.txt -fo virulence.fasta
 
+# Traducir las secuencias con virtual ribosome
+https://services.healthtech.dtu.dk/services/VirtualRibosome-2.0/
+```
+# Código 9: ORTHO-ANI
+```
+# Instalar NCBI-DATASETS
+conda create -n ncbi_datasets
+conda activate ncbi_datasets
+
+# Descargar los genomas con la lista sugerida. Emplear el codigo "command_ncbidatasets.sh" disponible en https://github.com/Vjimenez-vasquez/NCBI-DATASETS
+./command_ncbidatasets.sh accessions.txt
+
+
 
 ```
