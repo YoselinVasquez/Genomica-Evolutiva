@@ -54,6 +54,9 @@ fasterq-dump --split-files *.sra
 gzip *fastq
 fastqc *
 
+# Conocer el número de secuencias totales.
+zcat SRR21103588_1.fast.gz | echo $((`wc -l`/4))
+
 #1 Indexar el genoma de referencia#
 bwa index reference.fasta ;
 
