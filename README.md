@@ -48,11 +48,11 @@ fastqc *
 # Código 3: Mapeado de secuencias
 ```r
 # Desacargar bwa, samtools, ivar, igv.
-# Descargar de NCBI
+# Descargar de NCBI genoma de referencia en formato fasta.
 prefetch --max-size 50G --option-file accessions_mpox.txt
 mv */*.sra .
 fasterq-dump --split-files *.sra
-gzip *fastq
+gzip *fastq 
 fastqc *
 
 # Conocer el número de secuencias totales.
