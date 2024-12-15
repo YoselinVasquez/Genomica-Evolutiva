@@ -47,6 +47,7 @@ fastqc *
 ```
 # Código 3: Mapeado de secuencias
 ```r
+# Desacargar bwa, samtools, ivar, igv.
 # Descargar de NCBI
 prefetch --max-size 50G --option-file accessions_mpox.txt
 mv */*.sra .
