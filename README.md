@@ -282,7 +282,7 @@ bedtools getfasta -fi  GCA_001183825.1.fasta -bed extract.txt -fo virulence.fast
 # Traducir las secuencias con virtual ribosome
 https://services.healthtech.dtu.dk/services/VirtualRibosome-2.0/
 ```
-# Código 9: ORTHO-ANI
+# Código 9: ORTHO-ANI: Para analizar distancias
 ```
 # Instalar NCBI-DATASETS
 conda create -n ncbi_datasets
@@ -291,6 +291,77 @@ conda activate ncbi_datasets
 # Descargar los genomas con la lista sugerida. Emplear el codigo "command_ncbidatasets.sh" disponible en https://github.com/Vjimenez-vasquez/NCBI-DATASETS
 ./command_ncbidatasets.sh accessions.txt
 
+# guardar los genomas en una nueva carpeta y comprimirla
 
+# Ingresar a la pagina de OAT para correr el algoritmo ORTHO-ANI
+https://www.ezbiocloud.net/tools/orthoani
 
+# Descargar BLAST+
+https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
+descargar "ncbi-blast-2.16.0+-win64.exe" para instarlar en el sistema
+o
+descargar "ncbi-blast-2.16.0+-x64-win64.tar.gz" para descargar los ejecutables directamente
+
+# 10.7: Analizar
+https://help.ezbiocloud.net/orthoani-genomic-similarity/
+https://pypi.org/project/orthoani/
+```
+# Código 10: Pangenome analysis: Encontrar Homologías
+```
+conda install -c conda-forge -c defaults -c bioconda roary
+conda install -c conda-forge -c defaults -c bioconda snp-sites
+conda install -c conda-forge -c defaults -c bioconda raxml
+conda install -c conda-forge -c defaults -c bioconda figtree
+
+# Annotation (PROKKA)
+conda activate prokka_env
+mkdir -p annotation ;
+mkdir -p ffn ;
+for r1 in *fasta
+do
+prefix=$(basename $r1 .fasta)
+prokka --cpus 4 $r1 -o ${prefix} --prefix ${prefix} --kingdom Bacteria ; 
+mv ${prefix}/*.gff annotation/${prefix}.gff
+done ;
+conda deactivate ;
+cp */*.ffn ffn/ ; 
+ls ;
+
+# Inferring clusters, core genes and accesory genes (ROARY): Alineaciones
+# https://github.com/sanger-pathogens/Roary #
+# roary -p 4 -f roary_output -g 200000 -z -r -e -n -v -cd 80 -i 90 annotation/*.gff ; #
+roary -p 4 -f roary_output -g 200000 -r -e -n -v -cd 80 -i 90 annotation/*.gff ;
+cp roary_output/core_gene_alignment.aln . ;
+ls -lh ; 
+
+# SNPs alignment (SNP-SITES)
+## Con gaps
+snp-sites -m -o snp1.phy core_gene_alignment.aln ;
+## Sin gaps
+snp-sites -m -c -o snp2.phy core_gene_alignment.aln ; 
+ls -lh ;
+
+# Phylogeny (RAXML): Creo un árbol filogenético
+raxmlHPC-PTHREADS -p 1254512 -m GTRCAT -s snp2.phy -n nwk -# 20 -T 4 ;
+mv RAxML_bestTree.nwk raw_tree.nwk ;
+rm RAxML_* ;
+mkdir phylogeny ;
+mv snp1.phy snp2.phy snp2.phy.reduced raw_tree.nwk core_gene_alignment.aln phylogeny/ ;
+
+# Cargar el programa "pangenome_command_2.R" en R o R-Studio
+# Ingresar la ruta correcta en cada caso (donde se encuentran los archivos "gene_presence_absence.csv" y "metadata_1.tsv")
+setwd("")
+dir()
+
+# Ingresar la ruta correcta hasta donde se encuentra el archivo pangenome_command_2.R
+source("../../pangenome_command_2.R")
+
+pangenome <- pres_abs(metadata = "metadata_1.tsv", roary_output = "gene_presence_absence.csv", last_column = "3", output = "out_5.tsv")
+head(pangenome)
+class(pangenome)
+pangenome[,1:10]
+
+# visualizacion en microreact: visualizar el árbol y la metada.
+https://microreact.org/
+cargar el arbol enraizado (formato .nwk) y la metadata final (out_5.tsv)
 ```
