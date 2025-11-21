@@ -161,7 +161,7 @@ conda install -c bioconda samtools==1.11
 ## Instalar medaka
 conda install -c conda-forge –c bioconda medaka
 ```
-# Código 7: Ensamblaje Nanopore (pipeline)
+# Código 7: Ensamblaje Nanopore
 ```r
 # Descargar los códigos de acceso (códigos: SRR17110067 y SRR17110070)
 # Crear directorio "sra_files", generar archivos SRA, mover archivos SRA al ambiente de trabajo, generar archivos fastq, comprimir archivos fastqc y mover los archivos SRA al directorio sra_files.
