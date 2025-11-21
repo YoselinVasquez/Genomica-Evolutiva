@@ -209,7 +209,9 @@ medaka_consensus -i SRR17110070.trim.fastq.gz -d SRR17110070.racon2.fasta -o med
 medaka_consensus -i SRR17110067.trim.fastq.gz -d SRR17110067.racon2.fasta -o medaka_SRR17110067 -t 4 ;
 
 # Evaluar calidad del emsamblado: QUAST
-quast.py -o quast_results -m 0 consensus.fasta
+quast.py -o quast_SRR17110067 -m 0 medaka_SRR17110067/consensus.fasta
+quast.py -o quast_SRR17110070 -m 0 medaka_SRR17110070/consensus.fasta
+
 ```
 
 # Código 8: BLAST
